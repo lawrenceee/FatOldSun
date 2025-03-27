@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 应用的主题 -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- 如果需要其他自定义样式，可以在这里添加 -->
+    </style>
+
+    <!-- 可选：如果需要保留 Theme.FatOldSunLib，可以单独定义 -->
+    <style name="Theme.FatOldSunLib" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- 自定义样式 -->
+    </style>
+
+    <style name="nav_bottom_select_text">
+        <item name="android:textSize">14sp</item>
+        <item name="android:drawablePadding">8dp</item>
+    </style>
+
+    <style name="nav_bottom__unselect_text">
+    <item name="android:textSize">10sp</item>
+    <item name="android:drawablePadding">4dp</item>
+    </style>
+
+</resources>

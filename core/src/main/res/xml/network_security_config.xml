@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--    从 Android 9（API 28）开始，默认禁止明文流量（HTTP），需要显式配置 cleartextTrafficPermitted="true" 或使用 networkSecurityConfig 允许明文流量。-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>
