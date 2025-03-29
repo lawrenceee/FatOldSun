@@ -1,20 +1,15 @@
 package com.lj.fatoldsun.platform
 
-import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import com.lj.fatoldsun.core.base.BaseLibActivity
 import com.lj.fatoldsun.core.navigation.BottomNavController
 import com.lj.fatoldsun.core.navigation.NavItem
-import com.lj.fatoldsun.core.utils.Logger
 import com.lj.fatoldsun.core.utils.StatusNavBarUtil
 import com.lj.fatoldsun.platform.databinding.ActivityMainBinding
 import com.lj.fatoldsun.platform.ui.HomeFragment
 import com.lj.fatoldsun.platform.ui.WebsitesFragment
-import com.zackratos.ultimatebarx.ultimatebarx.navigationBar
-import com.zackratos.ultimatebarx.ultimatebarx.statusBar
-import com.zackratos.ultimatebarx.ultimatebarx.statusBarOnly
 import dagger.hilt.android.AndroidEntryPoint
+
 @AndroidEntryPoint
 class MainActivity : BaseLibActivity() {
     private lateinit var mBinding: ActivityMainBinding
@@ -25,7 +20,7 @@ class MainActivity : BaseLibActivity() {
         setContentView(mBinding.root)
         //透明状态栏，导航栏侵入
         StatusNavBarUtil.setupStatusBar(this, isTransparent = true)
-        StatusNavBarUtil.setupNavigationBar(this, fitWindow = false, isTransparent = true)
+//        StatusNavBarUtil.setupNavigationBar(this, fitWindow = false, isTransparent = true)
         //初始化底部导航
         bottomNavController =  BottomNavController(this, mBinding.bottomNav, mBinding.fragmentContainer.id)
 

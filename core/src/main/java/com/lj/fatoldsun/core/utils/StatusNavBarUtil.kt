@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.zackratos.ultimatebarx.ultimatebarx.navigationBar
 import com.zackratos.ultimatebarx.ultimatebarx.statusBar
+import com.zackratos.ultimatebarx.ultimatebarx.statusBarOnly
 
 /**
  * @author LJ
@@ -30,7 +31,7 @@ object StatusNavBarUtil {
         backgroundColor: Int? = null
     ) {
 
-        activity.statusBar {
+        activity.statusBarOnly {
             if (isTransparent) transparent() else backgroundColor?.let {
                 color = it
             } //是否透明状态栏，不是就根据背景颜色是否为空设置颜色

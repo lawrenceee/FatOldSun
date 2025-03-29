@@ -2,8 +2,9 @@ package com.lj.fatoldsun.platform
 
 
 import com.lj.fatoldsun.core.base.BaseLibApplication
+import com.lj.fatoldsun.core.network.AuthInterceptor
+import com.lj.fatoldsun.core.network.NetworkClient
 import dagger.hilt.android.HiltAndroidApp
-import timber.log.Timber
 
 /**
  * @author LJ
@@ -14,6 +15,9 @@ import timber.log.Timber
 class MyApplication : BaseLibApplication() {
     override fun onCreate() {
         super.onCreate()
-        //初始化日志
+        NetworkClient.init(
+            baseUrl = "https://wanandroid.com/",
+            interceptors = listOf(AuthInterceptor{"my_token"}) //模拟token
+        )
     }
 }

@@ -4,6 +4,7 @@
     <!-- 应用的主题 -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- 如果需要其他自定义样式，可以在这里添加 -->
+        <!-- 确保不强制设置colorSurface为白色 -->
     </style>
 
     <!-- 可选：如果需要保留 Theme.FatOldSunLib，可以单独定义 -->

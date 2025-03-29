@@ -39,10 +39,8 @@ class WebsitesFragment : BaseLibFragment<FragmentWebsitesBinding>() {
             layoutManager = LinearLayoutManager(context)
             adapter = websitesAdapter
         }
-        //点击按钮获取数据
-        mBinding.btnChangeMessage.setOnClickListener {
-            mainViewModel.fetchDataFromNet()
-        }
+        //获取数据
+        mainViewModel.fetchDataFromNet()
 
 
         /**
