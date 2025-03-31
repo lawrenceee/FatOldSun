@@ -1,12 +1,8 @@
 package com.lj.fatoldsun.platform.vm
 
 
-import android.app.Application
 import com.lj.fatoldsun.core.base.BaseViewModel
-import com.lj.fatoldsun.platform.network.ApiService
-import com.lj.fatoldsun.core.network.NetworkClient
 import com.lj.fatoldsun.core.utils.Logger
-import com.lj.fatoldsun.platform.db.DatabaseProvider
 import com.lj.fatoldsun.platform.model.Website
 import com.lj.fatoldsun.platform.repository.WebsitesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel

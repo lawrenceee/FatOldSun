@@ -1,6 +1,5 @@
 package com.lj.fatoldsun.core.base
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.viewbinding.ViewBinding
 import com.lj.fatoldsun.core.ui.LoadingDialog
 import com.lj.fatoldsun.core.utils.Logger
-import com.lj.fatoldsun.core.utils.StatusNavBarUtil
 import me.jessyan.autosize.AutoSizeCompat
-import timber.log.Timber
 
 /**
  * @author LJ
@@ -20,17 +17,26 @@ import timber.log.Timber
  * @description:
  */
 abstract class BaseLibFragment<VB : ViewBinding> : Fragment() {
-    protected val mContext by lazy {
-        requireActivity()
+    protected val mActivity by lazy {
+        requireBaseActivity()
+    }
+    // 提供便捷方法获取 BaseLibActivity
+    private fun requireBaseActivity(): BaseLibActivity {
+        val activity = requireActivity()
+        if (activity is BaseLibActivity) {
+            return activity
+        } else {
+            throw IllegalStateException("Host activity must be BaseLibActivity, but was ${activity::class.java.simpleName}")
+        }
     }
 
     //用lateinit不合适，因为Fragment销毁时需要置空_binding
     private var _binding: VB? = null
 
     //受保护的 binding 属性，只有在 _binding 不为 null 时才能访问
-    protected val mBinding get() = _binding!! // 使用 !! 确保在访问时 _binding 已初始化
+    protected val mBinding get() = _binding ?: throw IllegalStateException("Binding is null. Use mBinding between onCreateView and onDestroyView.")
 
-    private val mLoadingDialog: LoadingDialog by lazy { LoadingDialog(mContext) }
+    private val mLoadingDialog: LoadingDialog by lazy { LoadingDialog(mActivity) }
 
     //子类实现，创建VB实例
     abstract fun inflateBinding(inflater: LayoutInflater, container: ViewGroup?): VB

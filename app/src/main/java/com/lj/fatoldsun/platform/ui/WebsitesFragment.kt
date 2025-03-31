@@ -12,6 +12,7 @@ import com.lj.fatoldsun.core.utils.ToastUtil
 import com.lj.fatoldsun.platform.adapter.WebsitesAdapter
 import com.lj.fatoldsun.platform.databinding.FragmentWebsitesBinding
 import com.lj.fatoldsun.platform.vm.MainViewModel
+import com.lj.fatoldsun.platform.webview.WebViewActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -22,7 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class WebsitesFragment : BaseLibFragment<FragmentWebsitesBinding>() {
     private val mainViewModel: MainViewModel by viewModels()
-    private val websitesAdapter: WebsitesAdapter = WebsitesAdapter()
+    private val websitesAdapter: WebsitesAdapter by lazy {  WebsitesAdapter() }
 
     override fun inflateBinding(
         inflater: LayoutInflater,
@@ -42,6 +43,10 @@ class WebsitesFragment : BaseLibFragment<FragmentWebsitesBinding>() {
         //获取数据
         mainViewModel.fetchDataFromNet()
 
+        websitesAdapter.setOnItemClickListener { adapter, view, position ->
+            val website = adapter.items[position]
+            mActivity.navigateTo(WebViewActivity::class.java, "url" to website.link)
+        }
 
         /**
          * 观察在状态变化
@@ -49,7 +54,7 @@ class WebsitesFragment : BaseLibFragment<FragmentWebsitesBinding>() {
         observe(mainViewModel.state) { state ->
             when(state) {
                 is State.Loading -> toggleLoading(state.isLoading)
-                is State.Error -> ToastUtil.show(mContext, state.errorMessage)
+                is State.Error -> ToastUtil.show(mActivity, state.errorMessage)
                 is State.Success -> websitesAdapter.updateWebsites(state.data)
                 }
 

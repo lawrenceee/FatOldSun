@@ -28,7 +28,8 @@ coroutines = "1.8.0"
 jetbrainsAnnotations = "23.0.0"
 ksp = "2.0.0-1.0.24" # 与 Kotlin 2.0.0 兼容
 brvah = "4.1.4"
-legacySupportV4 = "1.0.0" # io.github.cymchad:BaseRecyclerViewAdapterHelper4:4.1.4
+legacySupportV4 = "1.0.0"
+activity = "1.8.0" # io.github.cymchad:BaseRecyclerViewAdapterHelper4:4.1.4
 
 
 
@@ -74,6 +75,7 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 androidx-legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
