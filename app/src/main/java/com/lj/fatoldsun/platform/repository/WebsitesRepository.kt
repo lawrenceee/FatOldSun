@@ -3,7 +3,7 @@ package com.lj.fatoldsun.platform.repository
 import com.lj.fatoldsun.core.network.NetworkClient
 import com.lj.fatoldsun.core.network.Response
 import com.lj.fatoldsun.platform.db.WebsitesDao
-import com.lj.fatoldsun.platform.model.Website
+import com.lj.fatoldsun.platform.model.entity.Website
 import com.lj.fatoldsun.platform.network.ApiService
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -23,7 +23,7 @@ class WebsitesRepository @Inject constructor(
     /**
      * 从接口获取网站数据
      */
-    suspend fun fetchWebsitesFromNetwork() : Response<List<Website>>{
+    suspend fun fetchWebsitesFromNetwork() : Response<List<Website>> {
         return apiService.getWebsites()
     }
 

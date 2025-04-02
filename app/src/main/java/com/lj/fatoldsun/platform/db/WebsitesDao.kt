@@ -4,8 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.lj.fatoldsun.platform.model.Website
-import retrofit2.http.DELETE
+import com.lj.fatoldsun.platform.model.entity.Website
 
 @Dao
 interface WebsitesDao {

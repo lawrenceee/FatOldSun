@@ -3,7 +3,7 @@ package com.lj.fatoldsun.platform.vm
 
 import com.lj.fatoldsun.core.base.BaseViewModel
 import com.lj.fatoldsun.core.utils.Logger
-import com.lj.fatoldsun.platform.model.Website
+import com.lj.fatoldsun.platform.model.entity.Website
 import com.lj.fatoldsun.platform.repository.WebsitesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -14,7 +14,7 @@ import javax.inject.Inject
  * @description:
  */
 @HiltViewModel
-class MainViewModel @Inject constructor(private val websitesRepository: WebsitesRepository): BaseViewModel<List<Website>>() {
+class WebsitesViewModel @Inject constructor(private val websitesRepository: WebsitesRepository): BaseViewModel<List<Website>>() {
     private var isDataLoaded = false //添加标志，避免数据库数据重复加载
     init {
         if (!isDataLoaded) {

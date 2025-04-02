@@ -30,6 +30,8 @@ ksp = "2.0.0-1.0.24" # 与 Kotlin 2.0.0 兼容
 brvah = "4.1.4"
 legacySupportV4 = "1.0.0"
 activity = "1.8.0" # io.github.cymchad:BaseRecyclerViewAdapterHelper4:4.1.4
+banner = "2.2.3"
+paging = "3.3.0"
 
 
 
@@ -63,6 +65,7 @@ gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+androidx-room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }  # Room Paging 集成
 jetbrains-annotations = { group = "org.jetbrains", name = "annotations", version.ref = "jetbrainsAnnotations" }
 
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
@@ -76,6 +79,11 @@ coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", ve
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 androidx-legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+
+androidx-paging = { group = "androidx.paging", name = "paging-runtime-ktx", version.ref = "paging" }
+
+youth-banner = {group = "io.github.youth5201314", name = "banner", version.ref = "banner"}
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

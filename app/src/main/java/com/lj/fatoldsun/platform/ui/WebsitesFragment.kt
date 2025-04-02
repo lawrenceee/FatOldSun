@@ -11,7 +11,7 @@ import com.lj.fatoldsun.core.config.status.State
 import com.lj.fatoldsun.core.utils.ToastUtil
 import com.lj.fatoldsun.platform.adapter.WebsitesAdapter
 import com.lj.fatoldsun.platform.databinding.FragmentWebsitesBinding
-import com.lj.fatoldsun.platform.vm.MainViewModel
+import com.lj.fatoldsun.platform.vm.WebsitesViewModel
 import com.lj.fatoldsun.platform.webview.WebViewActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class WebsitesFragment : BaseLibFragment<FragmentWebsitesBinding>() {
-    private val mainViewModel: MainViewModel by viewModels()
+    private val mainViewModel: WebsitesViewModel by viewModels()
     private val websitesAdapter: WebsitesAdapter by lazy {  WebsitesAdapter() }
 
     override fun inflateBinding(

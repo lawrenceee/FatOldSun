@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.lj.fatoldsun.platform.databinding.ItemWebsitesBinding
-import com.lj.fatoldsun.platform.model.Website
+import com.lj.fatoldsun.platform.model.entity.Website
 
 /**
  * @author LJ

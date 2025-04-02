@@ -92,7 +92,14 @@ android {
 
         // 日志工具
         api(libs.timber)
-   
+
+        //banner
+        api(libs.youth.banner)
+
+        //paging
+        api(libs.androidx.paging)
+        api(libs.androidx.room.paging)
+
         // 单元测试依赖
         testImplementation(libs.junit)
     }

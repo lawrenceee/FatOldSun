@@ -1,4 +1,4 @@
-package com.lj.fatoldsun.platform.model
+package com.lj.fatoldsun.platform.model.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

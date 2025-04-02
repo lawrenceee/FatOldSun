@@ -2,6 +2,7 @@ package com.lj.fatoldsun.platform.di
 
 import android.content.Context
 import com.lj.fatoldsun.platform.db.AppDatabase
+import com.lj.fatoldsun.platform.db.ArticlesDao
 import com.lj.fatoldsun.platform.db.DatabaseProvider
 import com.lj.fatoldsun.platform.db.WebsitesDao
 import dagger.Module
@@ -28,6 +29,12 @@ object DatabaseModule {
     @Singleton
     fun provideWebsitesDao(appDatabase: AppDatabase): WebsitesDao {
         return appDatabase.websitesDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideArticlesDao(appDatabase: AppDatabase): ArticlesDao {
+        return appDatabase.articlesDao()
     }
 
 }

@@ -1,6 +1,5 @@
 package com.lj.fatoldsun.core.network
 
-import androidx.core.app.NotificationCompat.MessagingStyle.Message
 
 /**
  * @author LJ

@@ -1,4 +1,6 @@
-package com.lj.fatoldsun.platform.model
+package com.lj.fatoldsun.platform.model.response
+
+import com.lj.fatoldsun.platform.model.entity.Website
 
 /**
  * https://www.wanandroid.com/friend/json数据

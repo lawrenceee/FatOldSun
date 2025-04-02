@@ -23,7 +23,8 @@ object DatabaseProvider {
                 context.applicationContext,
                 AppDatabase::class.java,
                 DB_NAME
-            ).build().also { instance = it }
+            ).fallbackToDestructiveMigration() //开发阶段使用fallbackToDestructiveMigration 破坏性迁移，但前提是version要增加
+                .build().also { instance = it }
         }
     }
 

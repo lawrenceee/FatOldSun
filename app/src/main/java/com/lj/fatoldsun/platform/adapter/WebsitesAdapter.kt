@@ -2,7 +2,7 @@ package com.lj.fatoldsun.platform.adapter
 
 import com.lj.fatoldsun.core.adapter.BaseAdapter
 import com.lj.fatoldsun.platform.databinding.ItemWebsitesBinding
-import com.lj.fatoldsun.platform.model.Website
+import com.lj.fatoldsun.platform.model.entity.Website
 
 /**
  * @author LJ
