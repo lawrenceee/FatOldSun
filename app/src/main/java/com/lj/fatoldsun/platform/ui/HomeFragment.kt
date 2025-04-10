@@ -15,7 +15,10 @@ import com.lj.fatoldsun.core.base.BaseLibFragment
 import com.lj.fatoldsun.core.config.status.State
 import com.lj.fatoldsun.core.utils.Logger
 import com.lj.fatoldsun.core.utils.ToastUtil
+import com.lj.fatoldsun.core.utils.ext.SlideDirection
 import com.lj.fatoldsun.core.utils.ext.dp
+import com.lj.fatoldsun.core.utils.ext.slideIn
+import com.lj.fatoldsun.core.utils.ext.slideOut
 import com.lj.fatoldsun.core.widget.banner.BannerView
 import com.lj.fatoldsun.platform.adapter.ArticleLoadStateAdapter
 import com.lj.fatoldsun.platform.adapter.ArticlePagingAdapter
@@ -80,12 +83,23 @@ class HomeFragment : BaseLibFragment<FragmentHomeBinding>() {
                 headerAdapter,
                 articleAdapter.withLoadStateFooter(loadStateAdapter) //附加上加载更多脚布局adapter
             )
-            // 监听滚动事件，控制 FAB 的显示/隐藏
+//             监听滚动事件，控制 FAB 的显示/隐藏
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                     val firstVisiblePosition = layoutManager.findFirstVisibleItemPosition()
-                    mBinding.fbScrollToTop.apply { if (firstVisiblePosition > 10) show() else hide() }
+                    val isFabShown = mBinding.fbScrollToTop.isShown
+                    mBinding.fbScrollToTop.apply {
+                        if (firstVisiblePosition > 10) {
+                            if (!isFabShown) {
+                                this.slideIn(SlideDirection.BOTTOM, duration = 300L)
+                            }
+                        } else {
+                            if (isFabShown) {
+                                this.slideOut(SlideDirection.BOTTOM)
+                            }
+                        }
+                    }
                 }
             })
 

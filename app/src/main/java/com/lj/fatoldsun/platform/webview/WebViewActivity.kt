@@ -2,6 +2,7 @@ package com.lj.fatoldsun.platform.webview
 
 import android.os.Bundle
 import com.lj.fatoldsun.core.base.BaseLibActivity
+import com.lj.fatoldsun.core.utils.StatusNavBarUtil
 import com.lj.fatoldsun.platform.R
 import com.lj.fatoldsun.platform.databinding.ActivityWebViewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -13,6 +14,8 @@ class WebViewActivity : BaseLibActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityWebViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        StatusNavBarUtil.setupStatusBar(
+            this, isTransparent = true, light = true, fitWindow = true)
         val url = intent.getStringExtra("url") ?: return
         val fragment = WebViewFragment.newInstance(url)
         supportFragmentManager.beginTransaction()

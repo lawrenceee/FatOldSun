@@ -27,6 +27,7 @@ object StatusNavBarUtil {
     fun setupStatusBar(
         activity: FragmentActivity,
         isTransparent: Boolean = true,
+        fitWindow: Boolean? = null, // 允许外部指定 fitWindow，如果为 null 则根据导航模式动态决定
         light: Boolean? = null, //true 灰色 false 白色
         backgroundColor: Int? = null
     ) {
@@ -36,6 +37,7 @@ object StatusNavBarUtil {
                 color = it
             } //是否透明状态栏，不是就根据背景颜色是否为空设置颜色
             this.light = light ?: backgroundColor?.let { calculateLightMode(it) } ?: true
+            fitWindow?.let {this.fitWindow = it }
         }
 
     }

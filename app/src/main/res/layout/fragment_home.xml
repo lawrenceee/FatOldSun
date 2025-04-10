@@ -43,7 +43,7 @@
         app:fabSize="mini"
         app:backgroundTint="@color/pink_ef8df5"
         app:tint="@color/white"
-        android:visibility="gone" />
+        />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
