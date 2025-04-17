@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
  * @author LJ
  * @time 2025/03/31 17:08
  * @description:
- * 通用的 Paging 适配器，基于 Paging 3 和 BRVAH
+ * 通用的 Paging 适配器，基于 Paging 3
  * 作用：提供分页加载的通用实现，支持任意数据类型
  * @param T 数据类型，泛型设计提升复用性
- * @param VH ViewHolder 类型，基于 QuickViewHolder
+ * @param VH ViewHolder 类型，基于 RecyclerView.ViewHolder
  * @param diffCallback DiffUtil 比较器，用于高效更新数据
  */
 abstract class BasePagingAdapter<T : Any, VH : RecyclerView.ViewHolder>(

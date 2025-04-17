@@ -20,7 +20,7 @@ import com.lj.fatoldsun.core.utils.ext.dp
 import com.lj.fatoldsun.core.utils.ext.slideIn
 import com.lj.fatoldsun.core.utils.ext.slideOut
 import com.lj.fatoldsun.core.widget.banner.BannerView
-import com.lj.fatoldsun.platform.adapter.ArticleLoadStateAdapter
+import com.lj.fatoldsun.platform.adapter.ArticleLoadStateFooterAdapter
 import com.lj.fatoldsun.platform.adapter.ArticlePagingAdapter
 import com.lj.fatoldsun.platform.adapter.HeaderAdapter
 import com.lj.fatoldsun.platform.databinding.FragmentHomeBinding
@@ -37,7 +37,7 @@ class HomeFragment : BaseLibFragment<FragmentHomeBinding>() {
     private lateinit var bannerView: BannerView
     private lateinit var headerAdapter: HeaderAdapter
     private val articleAdapter by lazy {
-        ArticlePagingAdapter { articles ->
+        ArticlePagingAdapter { articles -> //列表的点击事件回调
             mActivity.navigateTo(
                 WebViewActivity::class.java, "url" to articles.link
             )
@@ -47,8 +47,8 @@ class HomeFragment : BaseLibFragment<FragmentHomeBinding>() {
     /**
      * 加载更多adapter
      */
-    private val loadStateAdapter by lazy {
-        ArticleLoadStateAdapter { articleAdapter.retry() }
+    private val articleLoadStateFooterAdapter by lazy {
+        ArticleLoadStateFooterAdapter { articleAdapter.retry() }
     }
 
     override fun inflateBinding(
@@ -81,7 +81,7 @@ class HomeFragment : BaseLibFragment<FragmentHomeBinding>() {
             layoutManager = LinearLayoutManager(context)
             adapter = ConcatAdapter( //拼接adapter
                 headerAdapter,
-                articleAdapter.withLoadStateFooter(loadStateAdapter) //附加上加载更多脚布局adapter
+                articleAdapter.withLoadStateFooter(articleLoadStateFooterAdapter) //附加上加载更多脚布局adapter
             )
 //             监听滚动事件，控制 FAB 的显示/隐藏
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -110,6 +110,7 @@ class HomeFragment : BaseLibFragment<FragmentHomeBinding>() {
             mBinding.recyclerView.smoothScrollToPosition(0)
         }
 
+
         /**
          * 观察banner数据
          */
@@ -132,7 +133,10 @@ class HomeFragment : BaseLibFragment<FragmentHomeBinding>() {
 
         }
 
-        // 监听文章数据的加载状态，统一管理 swipeRefresh.isRefreshing
+
+
+
+        // 监听文章数据的加载状态，统一管理 swipeRefresh.isRefreshing 如果 Flow 发射数据的速度很快，而下游（收集端）处理速度跟不上，collectLatest 会取消之前的处理，只处理最新发射的数据。减少不必要的 UI 更新。
         lifecycleScope.launch {
             articleAdapter.loadStateFlow.collectLatest { loadStates ->
                 when (val refreshState = loadStates.refresh) {
@@ -147,6 +151,8 @@ class HomeFragment : BaseLibFragment<FragmentHomeBinding>() {
                 }
             }
         }
+
+
         // 在生命周期作用域内启动协程
         // 安全处理异步数据
         lifecycleScope.launch {

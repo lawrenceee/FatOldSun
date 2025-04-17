@@ -11,11 +11,11 @@ import com.lj.fatoldsun.platform.databinding.ItemLoadStateBinding
 /**
  * @author LJ
  * @time 2025/04/02 13:42
- * @description:
+ * @description:列表加载更多的脚布局适配器
  */
-class ArticleLoadStateAdapter(
+class ArticleLoadStateFooterAdapter(
     private val retry: () -> Unit
-) : LoadStateAdapter<ArticleLoadStateAdapter.ViewHolder>() {
+) : LoadStateAdapter<ArticleLoadStateFooterAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, loadState: LoadState) {
         holder.bind(loadState)

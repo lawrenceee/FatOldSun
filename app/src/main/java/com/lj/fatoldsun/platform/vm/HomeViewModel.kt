@@ -21,22 +21,22 @@ class HomeViewModel @Inject constructor(
 ) : BaseViewModel<List<BannerResponse>>() {
 
 
-
     fun fetchBannersFromNet() {
-        launchRequest (
-            block = {homeRepository.getBanners()},
+        launchRequest(
+            block = { homeRepository.getBanners() },
             onSuccess = { bannerResponse ->
                 updateData(bannerResponse)
             }
 
         )
     }
+
     /**
      * 获取纯网络文章数据
      * @return Flow<PagingData<ArticleItem>> 分页数据流
      * 作用：提供纯网络加载的文章数据
      */
-    fun getArticlesFromNetwork() : Flow<PagingData<ArticleItem>> {
+    fun getArticlesFromNetwork(): Flow<PagingData<ArticleItem>> {
         //调取仓库方法，获取分页数据流
         return homeRepository.getArticlesFromNetwork()
     }
@@ -52,7 +52,7 @@ class HomeViewModel @Inject constructor(
 
     /**
      * 刷新数据
-       重新拉取 Banner 数据
+    重新拉取 Banner 数据
      */
     fun refresh() {
         fetchBannersFromNet()

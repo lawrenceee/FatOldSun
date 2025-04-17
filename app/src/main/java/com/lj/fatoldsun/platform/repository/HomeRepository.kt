@@ -36,6 +36,7 @@ class HomeRepository @Inject constructor(private val database: AppDatabase) {
      * 获取banner数据
      */
     suspend fun getBanners(): Response<List<BannerResponse>> {
+
         return apiService.getBanners()
     }
 
@@ -44,11 +45,18 @@ class HomeRepository @Inject constructor(private val database: AppDatabase) {
      * @return Paging 数据流
      */
     fun getArticlesFromNetwork(): Flow<PagingData<ArticleItem>> {
-        //创建pager
+        /**
+         *     创建pager
+         *     pageSize = 40,              // 与接口协商的每页数量
+         *     prefetchDistance = 5,      // 提前5个item触发加载
+         *     initialLoadSize = 80,       // 首次加载2页数据
+         *     maxSize = 200,              // 内存最大缓存数量
+         *     enablePlaceholders = false  // 复杂UI建议关闭占位符
+         */
         return Pager(
             config = PagingConfig(
                 pageSize = 40, //每页大小
-                prefetchDistance = 5, // 距离底部 5 项时开始预加载
+                prefetchDistance = 5, // 距离底部 5 项时开始预加载 默认情况下，prefetchDistance 等于 pageSize，这里自定义为5
                 enablePlaceholders = false //禁用占位符
             ),
             pagingSourceFactory = { ArticlePagingSource(apiService) }
@@ -97,8 +105,8 @@ class ArticleRemoteMediator(
     ): MediatorResult {
         val page = when (loadType) {
             LoadType.REFRESH -> 0 //从0开始
-            LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true) //不支持前置加载
-            LoadType.APPEND -> {
+            LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true) //不支持前置加载（加载上一页）。 endOfPaginationReached = true：表示“已经没有更多数据可以加载了”
+            LoadType.APPEND -> { //追加加载（加载下一页）
                 // 计算下一页页码
                 // 作用：基于已加载的页面数量确定下一页
                 // 原理：state.pages 是已加载的所有页面，size 是页面数量，接口从 0 开始，所以 size 就是下一页页码
@@ -119,7 +127,7 @@ class ArticleRemoteMediator(
 
                     database.articlesDao().insertArticles(articles)
                 }
-                MediatorResult.Success(endOfPaginationReached = response.data.over)
+                MediatorResult.Success(endOfPaginationReached = response.data.over) //endOfPaginationReached: Boolean 表示是否已经加载到最后一页。
             } else {
                 MediatorResult.Error(Exception(response.errorMsg))
             }
@@ -133,24 +141,6 @@ class ArticleRemoteMediator(
     }
 
 
-}
-
-/**
- * 将文章返回响应类Response映射成UI需要的ArticleItem
- */
-private fun responseMapToArticleItem(response: Response<PagingResponse<ArticleResponse>>): List<ArticleItem> {
-    return response.data.datas.map {
-        ArticleItem(
-            id = it.id,
-            title = it.title,
-            link = it.link,
-            author = it.author,
-            shareUser = it.shareUser,
-            niceDate = it.niceDate,
-            chapterName = it.chapterName,
-            superChapterName = it.superChapterName
-        )
-    }
 }
 
 /**
@@ -191,12 +181,33 @@ class ArticlePagingSource(private val apiService: ApiService) : PagingSource<Int
     /**
      * 获取刷新键
      * @param state Paging 状态
+     * anchorPosition 当前用户看到的“锚点位置”（通常是屏幕上可见的第一个条目的索引）。
      */
     override fun getRefreshKey(state: PagingState<Int, ArticleItem>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
-            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1) //找到离 anchorPosition 最近的已加载页面。
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
     }
 
 }
+
+
+/**
+ * 将文章返回响应类Response映射成UI需要的ArticleItem
+ */
+private fun responseMapToArticleItem(response: Response<PagingResponse<ArticleResponse>>): List<ArticleItem> {
+    return response.data.datas.map {
+        ArticleItem(
+            id = it.id,
+            title = it.title,
+            link = it.link,
+            author = it.author,
+            shareUser = it.shareUser,
+            niceDate = it.niceDate,
+            chapterName = it.chapterName,
+            superChapterName = it.superChapterName
+        )
+    }
+}
+
