@@ -1,6 +1,7 @@
 package com.lj.fatoldsun.platform.adapter
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -24,6 +25,15 @@ class ArticlePagingAdapter(private val onItemClick: (ArticleItem) -> Unit) :
 
         override fun areContentsTheSame(oldItem: ArticleItem, newItem: ArticleItem): Boolean {
             return oldItem == newItem //基于equals比较
+        }
+
+        override fun getChangePayload(oldItem: ArticleItem, newItem: ArticleItem): Any? {
+            // 支持局部更新，返回变化的字段 当只有标题变化时，返回 Bundle 标记变化字段。onBindViewHolder 检查 payloads，仅更新标题视图。
+            return if (oldItem.title != newItem.title) {
+                Bundle().apply { putString("title", newItem.title) }
+            } else {
+                null
+            }
         }
 
 

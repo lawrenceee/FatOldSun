@@ -134,8 +134,6 @@ class HomeFragment : BaseLibFragment<FragmentHomeBinding>() {
         }
 
 
-
-
         // 监听文章数据的加载状态，统一管理 swipeRefresh.isRefreshing 如果 Flow 发射数据的速度很快，而下游（收集端）处理速度跟不上，collectLatest 会取消之前的处理，只处理最新发射的数据。减少不必要的 UI 更新。
         lifecycleScope.launch {
             articleAdapter.loadStateFlow.collectLatest { loadStates ->
@@ -150,6 +148,7 @@ class HomeFragment : BaseLibFragment<FragmentHomeBinding>() {
 
                 }
             }
+
         }
 
 
@@ -157,7 +156,7 @@ class HomeFragment : BaseLibFragment<FragmentHomeBinding>() {
         // 安全处理异步数据
         lifecycleScope.launch {
             // 收集最新的文章分页数据  将 Paging 数据提交给适配器
-            homeViewModel.getArticlesFromNetwork().collectLatest { pagingData ->
+            homeViewModel.articlesFlow.collectLatest { pagingData ->
                 articleAdapter.submitData(pagingData)
 
             }

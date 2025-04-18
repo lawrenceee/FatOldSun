@@ -57,7 +57,7 @@ class HomeRepository @Inject constructor(private val database: AppDatabase) {
             config = PagingConfig(
                 pageSize = 40, //每页大小
                 prefetchDistance = 5, // 距离底部 5 项时开始预加载 默认情况下，prefetchDistance 等于 pageSize，这里自定义为5
-                enablePlaceholders = false //禁用占位符
+                enablePlaceholders = true //启用占位符
             ),
             pagingSourceFactory = { ArticlePagingSource(apiService) }
         ).flow
