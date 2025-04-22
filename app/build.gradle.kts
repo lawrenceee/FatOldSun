@@ -66,6 +66,7 @@ dependencies {
     ksp(libs.room.compiler) // 添加 Room 的 KSP 处理器
     // 单元测试依赖
     testImplementation(libs.junit)
+    testImplementation(libs.mockito)
 
 //    implementation(libs.androidx.appcompat)
 

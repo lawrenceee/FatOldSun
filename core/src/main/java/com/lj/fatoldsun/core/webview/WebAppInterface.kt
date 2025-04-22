@@ -19,7 +19,8 @@ class WebAppInterface(
 
     @JavascriptInterface
     fun showToast(message: String) {
-        ToastUtil.show(context, message)
+        //限制消息长度，防止恶意输入
+        if (message.length <= 100) ToastUtil.show(context, message)
     }
 
     @JavascriptInterface

@@ -16,7 +16,6 @@ class MyApplication : BaseLibApplication() {
     override fun onCreate() {
         super.onCreate()
         NetworkClient.init(
-            baseUrl = "https://wanandroid.com/",
             interceptors = listOf(AuthInterceptor{"my_token"}) //模拟token
         )
     }

@@ -41,16 +41,27 @@ class ArticlePagingAdapter(private val onItemClick: (ArticleItem) -> Unit) :
     inner class ViewHolder (
         private val binding: ItemArticleBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind (item: ArticleItem) {
-            binding.apply {
-                tvTitle.text = item.title
-                tvAuthor.text = item.author ?: item.shareUser ?: "未知"
-                tvDate.text = item.niceDate ?: ""
-                " ${item.superChapterName ?: ""} / ${item.chapterName ?: ""} ".also { tvCategory.text = it }
-                root.setOnClickListener { onItemClick(item) }
+        fun bind (item: ArticleItem, payloads: List<Any>) {
+            if (payloads.isEmpty()) {
+                binding.apply {
+                    tvTitle.text = item.title
+                    tvAuthor.text = item.author ?: item.shareUser ?: "未知"
+                    tvDate.text = item.niceDate ?: ""
+                    " ${item.superChapterName ?: ""} / ${item.chapterName ?: ""} ".also { tvCategory.text = it }
+                    root.setOnClickListener { onItemClick(item) }
+                }
+            } else {
+                payloads.forEach { payload ->
+                    if (payload is Bundle) {
+                        payload.getString("title")?.let { binding.tvTitle.text = it }
+                    }
+
+                }
             }
+
         }
     }
+
 
     override fun onCreateViewHolder(
         context: Context,
@@ -61,6 +72,11 @@ class ArticlePagingAdapter(private val onItemClick: (ArticleItem) -> Unit) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, item: ArticleItem) {
-            holder.bind(item)
+        //不直接调用bind, 改用带payloads的版本
+            holder.bind(item, emptyList())
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
+        getItem(position)?.let { holder.bind(it, payloads) }
     }
 }
