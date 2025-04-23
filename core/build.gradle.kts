@@ -79,7 +79,10 @@ android {
         api(libs.coroutines.android)
 
         // Glide 图片加载
-        api("com.github.bumptech.glide:glide:4.16.0")
+        api(libs.glide)
+        
+        // Coil 图片加载
+        api(libs.coil)
 
         // 状态栏适配
         api(libs.ultimateBarX)

@@ -3,7 +3,7 @@ package com.lj.fatoldsun.core.widget.banner
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.lj.fatoldsun.core.utils.GlideImageLoader
 import com.youth.banner.adapter.BannerAdapter
 
 /**
@@ -30,9 +30,12 @@ class BannerImageAdapter(data: List<IBannerItem>) : BannerAdapter<IBannerItem, B
         position: Int,
         size: Int
     ) {
-        Glide.with(holder.imageView)
-            .load(data.imageUrl)
-            .into(holder.imageView)
+        // 使用GlideImageLoader工具类加载图片，替代直接使用Glide
+        GlideImageLoader.getInstance().loadImage(
+            holder.imageView.context,
+            data.imageUrl,
+            holder.imageView
+        )
     }
 
     /**
