@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.lj.fatoldsun.core.utils.Logger
 import com.lj.fatoldsun.core.webview.BaseWebViewFragment
 import com.lj.fatoldsun.core.webview.WebAppInterface
 import com.lj.fatoldsun.platform.databinding.FragmentWebviewBinding
 import com.lj.fatoldsun.platform.vm.WebViewViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 /**
  * @author LJ
@@ -70,15 +72,19 @@ class WebViewFragment : BaseWebViewFragment<FragmentWebviewBinding>() {
             }, "Android"
         )
 
-        //观察ViewModel的状态
-        observe(viewModel.progress) { progress ->
-            mBinding.progressBar.visibility = if (progress < 100) View.VISIBLE else View.GONE
-            mBinding.progressBar.progress = progress
+        //使用Flow观察ViewModel的状态
+        lifecycleScope.launch {
+            viewModel.progressFlow.collect { progress ->
+                mBinding.progressBar.visibility = if (progress < 100) View.VISIBLE else View.GONE
+                mBinding.progressBar.progress = progress
+            }
         }
-
-        observe(viewModel.error) { errorMessage ->
-            mBinding.errorLayout.visibility = if (null != errorMessage) View.VISIBLE else View.GONE
-            mBinding.webView.visibility = if (null != errorMessage) View.GONE else View.VISIBLE
+        
+        lifecycleScope.launch {
+            viewModel.errorFlow.collect { errorMessage ->
+                mBinding.errorLayout.visibility = if (null != errorMessage) View.VISIBLE else View.GONE
+                mBinding.webView.visibility = if (null != errorMessage) View.GONE else View.VISIBLE
+            }
         }
 
         mBinding.btnRetry.setOnClickListener {

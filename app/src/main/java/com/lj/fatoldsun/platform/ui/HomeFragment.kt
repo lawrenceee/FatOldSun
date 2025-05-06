@@ -112,26 +112,30 @@ class HomeFragment : BaseLibFragment<FragmentHomeBinding>() {
 
 
         /**
-         * 观察banner数据
+         * 观察banner数据（使用Flow）
          */
-        observe(homeViewModel.state) { state ->
-            when (state) {
-                is State.Loading -> {}//加载状态交给让 articleAdapter.loadStateFlow 统一管理
-                is State.Error -> ToastUtil.show(mActivity, state.errorMessage)
-                is State.Success -> {
-                    val bannerItems = state.data.map {
-                        BannerItem(
-                            imageUrl = it.imagePath,
-                            title = it.title,
-                            actionUrl = it.url
-                        )
+        lifecycleScope.launch {
+            homeViewModel.stateFlow.collect { state ->
+                state?.let {
+                    when (it) {
+                        is State.Loading -> {}//加载状态交给让 articleAdapter.loadStateFlow 统一管理
+                        is State.Error -> ToastUtil.show(mActivity, it.errorMessage)
+                        is State.Success -> {
+                            val bannerItems = it.data.map { banner ->
+                                BannerItem(
+                                    imageUrl = banner.imagePath,
+                                    title = banner.title,
+                                    actionUrl = banner.url
+                                )
+                            }
+                            bannerView.setItems(bannerItems)
+                        }
                     }
-                    bannerView.setItems(bannerItems)
                 }
-
             }
-
         }
+        
+        // 使用Flow观察状态变化，已在上面实现
 
 
         // 监听文章数据的加载状态，统一管理 swipeRefresh.isRefreshing 如果 Flow 发射数据的速度很快，而下游（收集端）处理速度跟不上，collectLatest 会取消之前的处理，只处理最新发射的数据。减少不必要的 UI 更新。

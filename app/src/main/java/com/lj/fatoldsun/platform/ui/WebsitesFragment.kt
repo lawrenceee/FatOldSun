@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lj.fatoldsun.core.base.BaseLibFragment
 import com.lj.fatoldsun.core.config.status.State
@@ -14,6 +15,7 @@ import com.lj.fatoldsun.platform.databinding.FragmentWebsitesBinding
 import com.lj.fatoldsun.platform.vm.WebsitesViewModel
 import com.lj.fatoldsun.platform.webview.WebViewActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 /**
  * @author LJ
@@ -49,16 +51,20 @@ class WebsitesFragment : BaseLibFragment<FragmentWebsitesBinding>() {
         }
 
         /**
-         * 观察在状态变化
+         * 观察状态变化（使用Flow）
          */
-        observe(mainViewModel.state) { state ->
-            when(state) {
-                is State.Loading -> toggleLoading(state.isLoading)
-                is State.Error -> ToastUtil.show(mActivity, state.errorMessage)
-                is State.Success -> websitesAdapter.updateWebsites(state.data)
+        lifecycleScope.launch {
+            mainViewModel.stateFlow.collect { state ->
+                state?.let {
+                    when(it) {
+                        is State.Loading -> toggleLoading(it.isLoading)
+                        is State.Error -> ToastUtil.show(mActivity, it.errorMessage)
+                        is State.Success -> websitesAdapter.updateWebsites(it.data)
+                    }
                 }
-
             }
+        }
+        
         }
     }
 

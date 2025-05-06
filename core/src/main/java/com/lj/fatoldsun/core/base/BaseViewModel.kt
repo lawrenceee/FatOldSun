@@ -5,21 +5,25 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lj.fatoldsun.core.config.status.State
+import com.lj.fatoldsun.core.config.status.StateManager
 import com.lj.fatoldsun.core.network.Response
 import com.lj.fatoldsun.core.utils.Logger
 import com.lj.fatoldsun.core.utils.NetworkErrorHandler
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 /**
  * @author LJ
  * @time 2025/03/20 17:15
  * @description:
+ * 基础ViewModel类，提供状态管理和网络请求封装
+ * 支持LiveData和Flow两种状态管理方式
  */
 open class BaseViewModel<T> : ViewModel() {
-    //储存状态的LiveData
-    private val _state = MutableLiveData<State<T>>()
-    val state: LiveData<State<T>> get() = _state
+    // 基于Flow的状态管理
+    private val stateManager = State.createStateManager<T>()
+    val stateFlow: StateFlow<State<T>?> get() = stateManager.state
 
 
     /**
@@ -34,24 +38,26 @@ open class BaseViewModel<T> : ViewModel() {
         onSuccess: suspend (T) -> Unit
     ) {
         viewModelScope.launch {
-            _state.value = State.Loading()
+            // 更新Flow状态
+            stateManager.setLoading()
+            
             runCatching {
                 block()
             }.onSuccess { response ->
                 if(response.isSuccess()) {
-                    _state.value = State.Success(response.data)
+                    stateManager.setSuccess(response.data)
                     onSuccess(response.data)
                 } else {
                     val error = response.errorMsg
                     Logger.e(message = error)
-                    _state.value = State.Error(error)
+                    stateManager.setError(error)
                 }
-                _state.value = State.Loading(false)
+                stateManager.setLoading(false)
             }.onFailure { throwable ->
                 val error = NetworkErrorHandler.handleError(throwable)
                 Logger.e(message = error)
-                _state.value = State.Error(NetworkErrorHandler.handleError(throwable))
-                _state.value = State.Loading(false)
+                stateManager.setError(error)
+                stateManager.setLoading(false)
             }
         }
     }
@@ -66,19 +72,20 @@ open class BaseViewModel<T> : ViewModel() {
         onSuccess: (T) -> Unit
     ) {
         viewModelScope.launch {
-            _state.value = State.Loading()
+            // 更新Flow状态
+            stateManager.setLoading()
+            
             runCatching {
                 block()
             }.onSuccess { data ->
-                _state.value = State.Success(data)
+                stateManager.setSuccess(data)
                 onSuccess(data)
-                _state.value = State.Loading(false)
+                stateManager.setLoading(false)
             }.onFailure { throwable ->
                 val error = NetworkErrorHandler.handleError(throwable)
                 Logger.e(message = error)
-                _state.value = State.Error(error)
-                _state.value = State.Loading(false)
-
+                stateManager.setError(error)
+                stateManager.setLoading(false)
             }
         }
     }
@@ -87,6 +94,13 @@ open class BaseViewModel<T> : ViewModel() {
      * 更新数据
      */
     fun updateData(newData: T) {
-        _state.value = State.Success(newData)
+        stateManager.setSuccess(newData)
+    }
+    
+    /**
+     * 重置状态
+     */
+    fun resetState() {
+        stateManager.reset()
     }
 }

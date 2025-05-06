@@ -1,9 +1,9 @@
 package com.lj.fatoldsun.platform.vm
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 /**
@@ -19,35 +19,35 @@ class WebViewViewModel @Inject constructor(): ViewModel() {
 
     fun setUrl(newUrl: String) {
         _url = newUrl
-        _error.value = null //重置错误信息
+        _errorFlow.value = null //重置错误信息
     }
 
     fun getUrl(): String = _url
 
-    //加载进度，通过 LiveData 通知 UI。
-    private val _progress = MutableLiveData<Int>()
-    val progress: LiveData<Int> get() = _progress
+    //加载进度，通过 Flow 通知 UI。
+    private val _progressFlow = MutableStateFlow<Int>(0)
+    val progressFlow: StateFlow<Int> get() = _progressFlow
 
     //错误信息，加载失败时显示。
-    private val _error = MutableLiveData<String?>()
-    val error: LiveData<String?> get() = _error
+    private val _errorFlow = MutableStateFlow<String?>(null)
+    val errorFlow: StateFlow<String?> get() = _errorFlow
 
     //加载进度
     fun onProgressChanged(newProgress: Int) {
-        _progress.value = newProgress
+        _progressFlow.value = newProgress
     }
 
     fun onPageFinshed() {
-        _error.value = null //加载成功 清空错误
+        _errorFlow.value = null //加载成功 清空错误
     }
 
     fun onError(errorMessage: String) {
-        _error.value = errorMessage
+        _errorFlow.value = errorMessage
     }
 
     fun retry() {
-        _error.value = null
-        _progress.value = 0
+        _errorFlow.value = null
+        _progressFlow.value = 0
     }
 
 }

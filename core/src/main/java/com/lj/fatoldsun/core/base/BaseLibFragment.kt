@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.viewbinding.ViewBinding
 import com.lj.fatoldsun.core.ui.LoadingDialog
 import com.lj.fatoldsun.core.utils.Logger
@@ -73,12 +72,4 @@ abstract class BaseLibFragment<VB : ViewBinding> : Fragment() {
     }
 
 
-
-    //通用的observe方法,简化LiveData观察
-    protected fun <T> observe(liveData: LiveData<T>, onChange: (T) -> Unit) {
-        liveData.observe(viewLifecycleOwner) { data ->
-            onChange(data)
-        }
-
-    }
 }
