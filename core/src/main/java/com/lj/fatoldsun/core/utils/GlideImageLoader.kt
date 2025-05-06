@@ -12,7 +12,6 @@ import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -198,7 +197,7 @@ class GlideImageLoader private constructor() {
                 override fun onLoadFailed(
                     e: GlideException?,
                     model: Any?,
-                    target: Target<Drawable>?,
+                    target: Target<Drawable>,
                     isFirstResource: Boolean
                 ): Boolean {
                     listener.onLoadFailed(e)
@@ -207,9 +206,9 @@ class GlideImageLoader private constructor() {
 
                 override fun onResourceReady(
                     resource: Drawable,
-                    model: Any?,
+                    model: Any,
                     target: Target<Drawable>?,
-                    dataSource: DataSource?,
+                    dataSource: DataSource,
                     isFirstResource: Boolean
                 ): Boolean {
                     listener.onLoadSuccess(resource)

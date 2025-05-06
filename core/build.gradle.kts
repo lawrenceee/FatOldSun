@@ -83,6 +83,7 @@ android {
         
         // Coil 图片加载
         api(libs.coil)
+        api(libs.coil.gif) // 添加Coil GIF支持
 
         // 状态栏适配
         api(libs.ultimateBarX)

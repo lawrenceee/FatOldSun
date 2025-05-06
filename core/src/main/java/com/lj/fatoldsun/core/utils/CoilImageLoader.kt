@@ -3,8 +3,10 @@ package com.lj.fatoldsun.core.utils
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
+import androidx.annotation.RequiresApi
 import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
@@ -16,14 +18,11 @@ import coil.request.ImageRequest
 import coil.size.Scale
 import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
-import com.bumptech.glide.load.engine.cache.DiskCache
-import com.bumptech.glide.load.engine.cache.MemoryCache
 import com.lj.fatoldsun.core.base.BaseLibApplication
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
-import java.time.temporal.TemporalQueries.precision
 
 /**
  * @author LJ
@@ -34,6 +33,7 @@ import java.time.temporal.TemporalQueries.precision
  * 基于Kotlin协程，支持多种图片来源、转换效果和加载配置
  * 相比Glide，Coil具有更小的库体积、更好的Kotlin支持和更现代的API设计
  */
+@RequiresApi(Build.VERSION_CODES.P) //ImageDecoderDecoder.Factory()需要api 28
 class CoilImageLoader private constructor() {
     
     // 创建默认的ImageLoader实例
@@ -204,21 +204,17 @@ class CoilImageLoader private constructor() {
         listener: ImageLoadListener
     ) {
         imageView.load(url, imageLoader) {
-            listener(object : coil.request.Listener {
-                override fun onStart(request: ImageRequest) {
-                    super.onStart(request)
-                }
-                
-                override fun onSuccess(request: ImageRequest, result: coil.request.SuccessResult) {
-                    super.onSuccess(request, result)
+            listener(
+                onStart = { request ->
+                    // 图片开始加载时的回调
+                },
+                onSuccess = { request, result ->
                     listener.onLoadSuccess(result.drawable)
-                }
-                
-                override fun onError(request: ImageRequest, result: coil.request.ErrorResult) {
-                    super.onError(request, result)
+                },
+                onError = { request, result ->
                     listener.onLoadFailed(result.throwable)
                 }
-            })
+            )
         }
     }
     

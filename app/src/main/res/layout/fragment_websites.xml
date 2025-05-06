@@ -6,7 +6,6 @@
     android:paddingEnd="16dp"
     android:paddingStart="16dp"
     android:orientation="vertical">
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_websites"
         android:layout_width="match_parent"
